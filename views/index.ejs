@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>URL Shortner</title>
+</head>
+<body class="bg-dark">
+
+    <div class="container">
+        <h1 class="text-light mt-3">URL Shortner</h1>
+        <form action="/create" method="post" class="form form-inline mb-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="url" placeholder="Enter Long URL" class="form-control" name="fullurl" required>
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="Add" class="btn btn-success">
+                </div>
+            </div>
+        </form>
+
+
+        <table class="table table-light table-hover">
+            <% if(allUrls.length == 0) { %>
+                <tr>
+                    <td>No URLs to show. Add a new URL using form above.</td>
+                </tr>
+            <% } else{ %>
+            <thead>
+                <th>No.</th>
+                <th>Long URL</th>
+                <th>Shorten URL</th>
+                <th>Clicks</th>
+                <th>Created At</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                <% let count = 0 %>
+                <% allUrls.forEach((item) => { %>
+                    <tr>
+                        <td><%= count %></td>
+                        <td><a href="<%= item.fullUrl %>" target="_blank"><%= item.fullUrl %></a></td>
+                        <td><a href="<%= item.short %>" target="_blank"><%= item.short %></a></td>
+                        <td><%= item.clicks %></td>
+                        <td><%= item.createdAt.toLocaleString() %></td>
+                        <td>
+                            <form action="/delete/<%= item.short %>?_method=DELETE" method="post">
+                                <input type="submit" value="Delete" class="btn btn-warning">
+                            </form>
+                        </td>
+                        <% count++ %>
+                    </tr>
+                <% }) %>    
+            </tbody>
+            <% } %>
+        </table>
+    </div>
+
+    <footer class="bg-light text-center py-2 fixed-bottom">
+        Developed by <a href="https://github.com/temalcode" target="_blank" >@temalcode</a>
+        <form action="/deleteall?_method=DELETE" method="post">
+            <input type="submit" value="Delete All URLs" class="btn btn-sm btn-danger my-1">
+        </form>
+    </footer>
+
+</body>
+</html>
